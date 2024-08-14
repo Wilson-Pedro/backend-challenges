@@ -16,7 +16,8 @@ public class PasswordController implements PasswordAPI {
 
 	@Override
 	public ResponseEntity<Object> validatePassword(Password password) {
-		return null;
+		passwordService.validatePassword(password.getPassword());
+		return ResponseEntity.ok(password);
 	}
 
 }
