@@ -1,31 +1,43 @@
 package com.example.password.services.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.example.password.domain.enums.PasswordValidation;
 import com.example.password.services.PasswordService;
+import com.example.password.services.exceptions.PasswordValidationException;
 
 @Service
 public class PasswordServiceImpl implements PasswordService {
 
 	@Override
 	public void validatePassword(String password) {
+		List<PasswordValidation> validations = getValidations(password);
+		if(!validations.isEmpty()) throw new PasswordValidationException(validations);
+	}
+	
+	@Override
+	public List<PasswordValidation> getValidations(String password) {
+		List<PasswordValidation> validations = new ArrayList<>();
 		if(password.length() < 8) {
-			throw new RuntimeException("The password must be at least eight characters long!");
-		
-		} else if(!containsStringCase(password, password.toUpperCase())) {
-			throw new RuntimeException("The password must contain at least one uppercase character!");
-		
-		} else if(!containsStringCase(password, password.toLowerCase())) {
-			throw new RuntimeException("The password must contain at least one lowercase character!");
-		
-		} else if(!containsNumber(password)) {
-			throw new RuntimeException("The password must contain at least one Number!");
+			validations.add(PasswordValidation.PASSWORD_LENGTH);
 			
-		} else if(!containsSpeciaCharacter(password)) {
-			throw new RuntimeException("The password must contain at least one Special Character!");
+		} if(!containsStringCase(password, password.toUpperCase())) {
+			validations.add(PasswordValidation.UPPER_CASE);
+			
+		} if(!containsStringCase(password, password.toLowerCase())) {
+			validations.add(PasswordValidation.LOWER_CASE);
+			
+		} if(!containsNumber(password)) {
+			validations.add(PasswordValidation.NUMBER);
+			
+		} if(!containsSpeciaCharacter(password)) {
+			validations.add(PasswordValidation.SPECIAL_CHARACTER);
 		}
+		
+		return validations;
 	}
 
 	private boolean containsStringCase(String password, String stringCase) {
@@ -64,5 +76,4 @@ public class PasswordServiceImpl implements PasswordService {
 //		// TODO Auto-generated method stub
 //		return false;
 //	}
-
 }
