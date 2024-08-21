@@ -19,6 +19,4 @@ public class UrlController implements UrlAPI {
 		String url = urlService.shortenUrl(urlDto.getUrl());
 		return ResponseEntity.ok(new UrlDTO(url));
 	}
-
-	
 }
