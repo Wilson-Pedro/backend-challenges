@@ -7,6 +7,7 @@ import com.example.url.domain.Url;
 import com.example.url.random.UrlRandom;
 import com.example.url.repositories.UrlRepository;
 import com.example.url.services.UrlService;
+import com.example.url.services.exceptions.ExistingUrlException;
 
 @Service
 public class UrlServiceImpl implements UrlService {
@@ -19,6 +20,7 @@ public class UrlServiceImpl implements UrlService {
 	
 	@Override
 	public Url save(Url url) {
+		validationUrl(url);
 		return urlRepository.save(url);
 	}
 
@@ -37,5 +39,10 @@ public class UrlServiceImpl implements UrlService {
 		if(url.startsWith("https")) http = url.substring(0, 8);
 		else if(url.startsWith("http"))http = url.substring(0, 7);
 		return http;
+	}
+	
+	@Override
+	public void validationUrl(Url url) {
+		if(urlRepository.existsByUrl(url.getUrl())) throw new ExistingUrlException();
 	}
 }

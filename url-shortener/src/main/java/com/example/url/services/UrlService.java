@@ -7,5 +7,7 @@ public interface UrlService {
 	Url save(Url url);
 	
 	String shortenUrl(String url);
+	
+	void validationUrl(Url url);
 
 }
