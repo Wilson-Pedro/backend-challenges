@@ -8,6 +8,7 @@ import com.example.url.random.UrlRandom;
 import com.example.url.repositories.UrlRepository;
 import com.example.url.services.UrlService;
 import com.example.url.services.exceptions.ExistingUrlException;
+import com.example.url.services.exceptions.UrlNotFoundException;
 
 @Service
 public class UrlServiceImpl implements UrlService {
@@ -26,6 +27,7 @@ public class UrlServiceImpl implements UrlService {
 	
 	@Override
 	public Url findByUrlShortener(String shortenedUrl) {
+		if(!urlRepository.existsByUrlShortener(shortenedUrl)) throw new UrlNotFoundException();
 		return urlRepository.findByUrlShortener(shortenedUrl);
 	}
 
