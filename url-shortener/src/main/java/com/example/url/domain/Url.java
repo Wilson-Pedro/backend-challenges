@@ -1,6 +1,6 @@
 package com.example.url.domain;
 
-import com.example.url.domain.dtos.UrlDTO;
+import java.io.Serializable;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -10,7 +10,8 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "TB_URL")
-public class UrlRequest {
+public class Url implements Serializable {
+	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,16 +19,12 @@ public class UrlRequest {
 	
 	private String url;
 	
-	public UrlRequest() {
-	}
+	private String urlShortener;
 	
-	public UrlRequest(Long id, String url) {
+	public Url(Long id, String url, String urlShortener) {
 		this.id = id;
 		this.url = url;
-	}
-	
-	public UrlRequest(UrlDTO urlDto) {
-		this.url = urlDto.getUrl();
+		this.urlShortener = urlShortener;
 	}
 
 	public Long getId() {
@@ -44,5 +41,13 @@ public class UrlRequest {
 
 	public void setUrl(String url) {
 		this.url = url;
+	}
+
+	public String getUrlShortener() {
+		return urlShortener;
+	}
+
+	public void setUrlShortener(String urlShortener) {
+		this.urlShortener = urlShortener;
 	}
 }

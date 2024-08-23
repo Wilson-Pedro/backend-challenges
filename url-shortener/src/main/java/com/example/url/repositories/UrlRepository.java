@@ -2,8 +2,8 @@ package com.example.url.repositories;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.example.url.domain.UrlRequest;
+import com.example.url.domain.Url;
 
-public interface UrlRepository extends JpaRepository<UrlRequest, Long>{
+public interface UrlRepository extends JpaRepository<Url, Long>{
 
 }
