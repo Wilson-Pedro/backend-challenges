@@ -21,6 +21,9 @@ public class Url implements Serializable {
 	
 	private String urlShortener;
 	
+	public Url() {
+	}
+	
 	public Url(Long id, String url, String urlShortener) {
 		this.id = id;
 		this.url = url;

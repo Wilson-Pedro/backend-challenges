@@ -6,6 +6,8 @@ public interface UrlService {
 	
 	Url save(Url url);
 	
+	Url findByUrlShortener(String shortenedUrl);
+	
 	String shortenUrl(String url);
 	
 	void validationUrl(Url url);

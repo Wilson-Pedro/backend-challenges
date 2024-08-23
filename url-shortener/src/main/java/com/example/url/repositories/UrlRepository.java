@@ -7,4 +7,6 @@ import com.example.url.domain.Url;
 public interface UrlRepository extends JpaRepository<Url, Long>{
 
 	boolean existsByUrl(String url);
+	
+	Url findByUrlShortener(String shortenedUrl);
 }

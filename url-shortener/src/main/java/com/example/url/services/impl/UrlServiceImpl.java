@@ -23,6 +23,11 @@ public class UrlServiceImpl implements UrlService {
 		validationUrl(url);
 		return urlRepository.save(url);
 	}
+	
+	@Override
+	public Url findByUrlShortener(String shortenedUrl) {
+		return urlRepository.findByUrlShortener(shortenedUrl);
+	}
 
 	@Override
 	public String shortenUrl(String url) {

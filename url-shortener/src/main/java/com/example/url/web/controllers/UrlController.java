@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.url.domain.Url;
+import com.example.url.domain.dtos.ShortenedUrlDTO;
 import com.example.url.domain.dtos.UrlDTO;
 import com.example.url.services.UrlService;
 import com.example.url.web.apis.UrlAPI;
@@ -20,5 +21,11 @@ public class UrlController implements UrlAPI {
 		String urlShortener = urlService.shortenUrl(urlDto.getUrl());
 		urlService.save(new Url(null, urlDto.getUrl(), urlShortener));
 		return ResponseEntity.ok(new UrlDTO(urlShortener));
+	}
+
+	@Override
+	public ResponseEntity<UrlDTO> findUrlByShortenedUrl(ShortenedUrlDTO urlDto) {
+		String url = urlService.findByUrlShortener(urlDto.getShortenedUrl()).getUrl();
+		return ResponseEntity.ok(new UrlDTO(url));
 	}
 }
