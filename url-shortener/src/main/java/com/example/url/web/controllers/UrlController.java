@@ -1,10 +1,12 @@
 package com.example.url.web.controllers;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.url.domain.Url;
+import com.example.url.domain.URL;
 import com.example.url.domain.dtos.ShortenedUrlDTO;
 import com.example.url.domain.dtos.UrlDTO;
 import com.example.url.services.UrlService;
@@ -18,9 +20,14 @@ public class UrlController implements UrlAPI {
 
 	@Override
 	public ResponseEntity<UrlDTO> shortenUrl(UrlDTO urlDto) {
-		String urlShortener = urlService.shortenUrl(urlDto.getUrl());
-		urlService.save(new Url(null, urlDto.getUrl(), urlShortener));
+		String urlShortener = urlService.prepareShortenUrl(urlDto.getUrl());
+		urlService.save(urlDto.getUrl());
 		return ResponseEntity.ok(new UrlDTO(urlShortener));
+	}
+	
+	@Override
+	public ResponseEntity<List<URL>> findAll() {
+		return ResponseEntity.ok(urlService.findAll());
 	}
 
 	@Override

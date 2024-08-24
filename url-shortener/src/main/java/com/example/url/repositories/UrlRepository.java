@@ -2,13 +2,13 @@ package com.example.url.repositories;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.example.url.domain.Url;
+import com.example.url.domain.URL;
 
-public interface UrlRepository extends JpaRepository<Url, Long>{
+public interface UrlRepository extends JpaRepository<URL, Long>{
 
 	boolean existsByUrl(String url);
 	
 	boolean existsByUrlShortener(String url);
 	
-	Url findByUrlShortener(String shortenedUrl);
+	URL findByUrlShortener(String shortenedUrl);
 }

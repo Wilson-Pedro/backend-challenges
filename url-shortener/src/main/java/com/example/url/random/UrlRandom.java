@@ -19,10 +19,8 @@ public class UrlRandom {
 	
 	public static Random RANDOM = new Random();
 	
-	public String generateRandomUrl(String http, String url) {
+	public String generateRandomUrl() {
 		String randomUrl = getRandomCharactres();
-		randomUrl = http + "xxx.com/" + randomUrl;
-		
 		return randomUrl;
 	}
 

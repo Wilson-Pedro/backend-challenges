@@ -1,9 +1,12 @@
 package com.example.url.services.impl;
 
+import java.time.Instant;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.example.url.domain.Url;
+import com.example.url.domain.URL;
 import com.example.url.random.UrlRandom;
 import com.example.url.repositories.UrlRepository;
 import com.example.url.services.UrlService;
@@ -20,25 +23,47 @@ public class UrlServiceImpl implements UrlService {
 	private UrlRandom urlRandom;
 	
 	@Override
-	public Url save(Url url) {
+	public URL save(URL url) {
 		validationUrl(url);
 		return urlRepository.save(url);
 	}
 	
 	@Override
-	public Url findByUrlShortener(String shortenedUrl) {
+	public URL save(String url) {
+		String shortenUrl = prepareShortenUrl(url);
+		URL newURL = new URL(null, url, shortenUrl, generateExpiration());
+		return save(newURL);
+	}
+	
+	@Override
+	public List<URL> findAll() {
+		return urlRepository.findAll();
+	}
+	
+	@Override
+	public URL findByUrlShortener(String shortenedUrl) {
 		if(!urlRepository.existsByUrlShortener(shortenedUrl)) throw new UrlNotFoundException();
 		return urlRepository.findByUrlShortener(shortenedUrl);
 	}
-
+	
 	@Override
-	public String shortenUrl(String url) {
-		String urlShorten = "", https = "";
+	public void validationUrl(URL url) {
+		if(urlRepository.existsByUrl(url.getUrl())) throw new ExistingUrlException();
+	}
+	
+	@Override
+	public String prepareShortenUrl(String url) {
+		String urlShorten = "", randomUrl = "", http = "";
 		if(url != null) {
-			https = substringHttp(url);
-			urlShorten = urlRandom.generateRandomUrl(https, urlShorten);
+			http = substringHttp(url);
+			randomUrl = urlRandom.generateRandomUrl();
 		}
+		urlShorten = http + "xxx.com/" + randomUrl;
 		return urlShorten;
+	}
+	
+	public Instant generateExpiration() {
+		return Instant.now().plusSeconds(10L);
 	}
 
 	private String substringHttp(String url) {
@@ -46,10 +71,5 @@ public class UrlServiceImpl implements UrlService {
 		if(url.startsWith("https")) http = url.substring(0, 8);
 		else if(url.startsWith("http"))http = url.substring(0, 7);
 		return http;
-	}
-	
-	@Override
-	public void validationUrl(Url url) {
-		if(urlRepository.existsByUrl(url.getUrl())) throw new ExistingUrlException();
 	}
 }

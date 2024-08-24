@@ -1,15 +1,21 @@
 package com.example.url.services;
 
-import com.example.url.domain.Url;
+import java.util.List;
+
+import com.example.url.domain.URL;
 
 public interface UrlService {
 	
-	Url save(Url url);
+	URL save(URL url);
 	
-	Url findByUrlShortener(String shortenedUrl);
+	URL save(String url);
 	
-	String shortenUrl(String url);
+	URL findByUrlShortener(String shortenedUrl);
 	
-	void validationUrl(Url url);
+	String prepareShortenUrl(String url);
+	
+	List<URL> findAll();
+	
+	void validationUrl(URL url);
 
 }
