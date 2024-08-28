@@ -17,5 +17,7 @@ public interface UrlService {
 	List<URL> findAll();
 	
 	void validationUrl(URL url);
+	
+	void validateUrlExpiration(URL url);
 
 }

@@ -37,7 +37,9 @@ public class UrlServiceImpl implements UrlService {
 	
 	@Override
 	public List<URL> findAll() {
-		return urlRepository.findAll();
+		var urls = urlRepository.findAll();
+		validateUrlsExpiration(urls);
+		return urls;
 	}
 	
 	@Override
@@ -46,12 +48,6 @@ public class UrlServiceImpl implements UrlService {
 		return urlRepository.findByUrlShortener(shortenedUrl);
 	}
 	
-	@Override
-	public void validationUrl(URL url) {
-		if(urlRepository.existsByUrl(url.getUrl())) throw new ExistingUrlException();
-	}
-	
-	@Override
 	public String prepareShortenUrl(String url) {
 		String urlShorten = "", randomUrl = "", http = "";
 		if(url != null) {
@@ -62,8 +58,24 @@ public class UrlServiceImpl implements UrlService {
 		return urlShorten;
 	}
 	
+	@Override
+	public void validationUrl(URL url) {
+		if(urlRepository.existsByUrl(url.getUrl())) throw new ExistingUrlException();
+	}
+	
+	@Override
+	public void validateUrlExpiration(URL url) {
+		if(Instant.now().isAfter(url.getUrlExpiration())) urlRepository.delete(url);
+	}
+	
+	public void validateUrlsExpiration(List<URL> urls) {
+		for(URL url : urls) {
+			validateUrlExpiration(url);
+		}
+	}
+	
 	public Instant generateExpiration() {
-		return Instant.now().plusSeconds(10L);
+		return Instant.now().plusSeconds(10);
 	}
 
 	private String substringHttp(String url) {
