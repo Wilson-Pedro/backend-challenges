@@ -6,8 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.url.domain.URL;
-import com.example.url.domain.dtos.ShortenedUrlDTO;
+import com.example.url.domain.ShortenedUrlRequest;
+import com.example.url.domain.UrlRequest;
 import com.example.url.domain.dtos.UrlDTO;
 import com.example.url.services.UrlService;
 import com.example.url.web.apis.UrlAPI;
@@ -19,20 +19,22 @@ public class UrlController implements UrlAPI {
 	private UrlService urlService;
 
 	@Override
-	public ResponseEntity<UrlDTO> shortenUrl(UrlDTO urlDto) {
+	public ResponseEntity<UrlRequest> shortenUrl(UrlRequest urlDto) {
 		String urlShortener = urlService.prepareShortenUrl(urlDto.getUrl());
 		urlService.save(urlDto.getUrl());
-		return ResponseEntity.ok(new UrlDTO(urlShortener));
+		return ResponseEntity.ok(new UrlRequest(urlShortener));
 	}
 	
 	@Override
-	public ResponseEntity<List<URL>> findAll() {
-		return ResponseEntity.ok(urlService.findAll());
+	public ResponseEntity<List<UrlDTO>> findAll() {
+		List<UrlDTO> urlsDto = urlService.findAll()
+				.stream().map(x -> new UrlDTO(x)).toList();
+		return ResponseEntity.ok(urlsDto);
 	}
 
 	@Override
-	public ResponseEntity<UrlDTO> findUrlByShortenedUrl(ShortenedUrlDTO urlDto) {
+	public ResponseEntity<UrlRequest> findUrlByShortenedUrl(ShortenedUrlRequest urlDto) {
 		String url = urlService.findByUrlShortener(urlDto.getShortenedUrl()).getUrl();
-		return ResponseEntity.ok(new UrlDTO(url));
+		return ResponseEntity.ok(new UrlRequest(url));
 	}
 }

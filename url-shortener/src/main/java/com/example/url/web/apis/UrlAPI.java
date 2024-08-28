@@ -8,19 +8,19 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.example.url.domain.URL;
-import com.example.url.domain.dtos.ShortenedUrlDTO;
+import com.example.url.domain.ShortenedUrlRequest;
+import com.example.url.domain.UrlRequest;
 import com.example.url.domain.dtos.UrlDTO;
 
 @RequestMapping("/urls")
 public interface UrlAPI {
 
 	@PostMapping(produces = "application/json", path="/shorten-url")
-	ResponseEntity<UrlDTO> shortenUrl(@RequestBody UrlDTO urlDto);
+	ResponseEntity<UrlRequest> shortenUrl(@RequestBody UrlRequest urlDto);
 	
 	@GetMapping(produces = "application/json", path="")
-	ResponseEntity<List<URL>> findAll();
+	ResponseEntity<List<UrlDTO>> findAll();
 	
 	@GetMapping(produces = "application/json", path="/shorten-url")
-	ResponseEntity<UrlDTO> findUrlByShortenedUrl(@RequestBody ShortenedUrlDTO urlDto);
+	ResponseEntity<UrlRequest> findUrlByShortenedUrl(@RequestBody ShortenedUrlRequest urlDto);
 }

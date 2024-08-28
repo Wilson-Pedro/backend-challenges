@@ -1,13 +1,13 @@
-package com.example.url.domain.dtos;
+package com.example.url.domain;
 
-public class ShortenedUrlDTO {
+public class ShortenedUrlRequest {
 
 	private String shortenedUrl;
 	
-	public ShortenedUrlDTO() {
+	public ShortenedUrlRequest() {
 	}
 	
-	public ShortenedUrlDTO(String shortenedUrl) {
+	public ShortenedUrlRequest(String shortenedUrl) {
 		this.shortenedUrl = shortenedUrl;
 	}
 
