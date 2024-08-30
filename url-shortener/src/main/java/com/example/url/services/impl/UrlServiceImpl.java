@@ -10,7 +10,6 @@ import com.example.url.domain.URL;
 import com.example.url.random.UrlRandom;
 import com.example.url.repositories.UrlRepository;
 import com.example.url.services.UrlService;
-import com.example.url.services.exceptions.ExistingUrlException;
 import com.example.url.services.exceptions.UrlNotFoundException;
 
 @Service
@@ -23,8 +22,15 @@ public class UrlServiceImpl implements UrlService {
 	private UrlRandom urlRandom;
 	
 	@Override
+	public URL shortenUrl(String url) {
+		if(urlRepository.existsByUrl(url)) {
+			return urlRepository.findByUrl(url);
+		}
+		return save(url);
+	}
+	
+	@Override
 	public URL save(URL url) {
-		validationUrl(url);
 		return urlRepository.save(url);
 	}
 	
@@ -44,27 +50,26 @@ public class UrlServiceImpl implements UrlService {
 	
 	@Override
 	public URL findByUrlShortener(String shortenedUrl) {
+		validateUrlExpiration(urlRepository.findByUrlShortener(shortenedUrl));
 		if(!urlRepository.existsByUrlShortener(shortenedUrl)) throw new UrlNotFoundException();
 		return urlRepository.findByUrlShortener(shortenedUrl);
 	}
 	
 	public String prepareShortenUrl(String url) {
 		String urlShorten = "", randomUrl = "", http = "";
-		if(url != null) {
-			http = substringHttp(url);
-			randomUrl = urlRandom.generateRandomUrl();
-		}
-		urlShorten = http + "xxx.com/" + randomUrl;
+		do {
+			if(url != null) {
+				http = substringHttp(url);
+				randomUrl = urlRandom.generateRandomUrl();
+			}
+			urlShorten = http + "xxx.com/" + randomUrl;
+		} while(urlRepository.existsByUrlShortener(urlShorten));
 		return urlShorten;
 	}
 	
 	@Override
-	public void validationUrl(URL url) {
-		if(urlRepository.existsByUrl(url.getUrl())) throw new ExistingUrlException();
-	}
-	
-	@Override
 	public void validateUrlExpiration(URL url) {
+		if(url == null) url = new URL(null, "", "", Instant.now().minusSeconds(600));
 		if(Instant.now().isAfter(url.getUrlExpiration())) urlRepository.delete(url);
 	}
 	
@@ -75,7 +80,7 @@ public class UrlServiceImpl implements UrlService {
 	}
 	
 	public Instant generateExpiration() {
-		return Instant.now().plusSeconds(10);
+		return Instant.now().plusSeconds(600);
 	}
 
 	private String substringHttp(String url) {

@@ -12,12 +12,12 @@ import com.example.url.services.exceptions.UrlNotFoundException;
 public class ApiExceptionHandler {
 
 	@ExceptionHandler(ExistingUrlException.class)
-	public ResponseEntity<Problam> existingUrlException() {
+	public ResponseEntity<Problam> existingUrlException(ExistingUrlException ex) {
 		
 		HttpStatus status = HttpStatus.BAD_REQUEST;
 		
 		Problam problam = new Problam();
-		problam.setTitle("This URL already has a shortened URL.");
+		problam.setTitle("This URL already has a shortened URL. UrlShortener: " + ex.getUrlShortener());
 		problam.setStatusCode(status.value());
 		problam.setSugestion("Please, use another URL that does not have a shortened URL.");
 		

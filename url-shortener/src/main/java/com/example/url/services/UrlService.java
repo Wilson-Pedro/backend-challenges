@@ -6,6 +6,8 @@ import com.example.url.domain.URL;
 
 public interface UrlService {
 	
+	URL shortenUrl(String url);
+	
 	URL save(URL url);
 	
 	URL save(String url);
@@ -15,8 +17,6 @@ public interface UrlService {
 	String prepareShortenUrl(String url);
 	
 	List<URL> findAll();
-	
-	void validationUrl(URL url);
 	
 	void validateUrlExpiration(URL url);
 
