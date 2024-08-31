@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.usermc.domain.records.Credentials;
+import com.example.usermc.domain.records.Token;
 import com.example.usermc.services.UserService;
 import com.example.usermc.web.apis.UserAPI;
 
@@ -15,8 +16,9 @@ public class UserController implements UserAPI {
 	private UserService userService;
 
 	@Override
-	public ResponseEntity<String> authenticate(Credentials credentials) {
-		return ResponseEntity.ok("OK");
+	public ResponseEntity<Token> authenticate(Credentials credentials) {
+		Token token = userService.authenticateCredentials(credentials);
+		return ResponseEntity.ok(token);
 	}
 	
 }

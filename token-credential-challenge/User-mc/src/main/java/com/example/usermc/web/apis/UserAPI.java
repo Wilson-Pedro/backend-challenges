@@ -6,10 +6,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.example.usermc.domain.records.Credentials;
+import com.example.usermc.domain.records.Token;
 
 @RequestMapping("/users")
 public interface UserAPI {
 
 	@PostMapping("/authenticate")
-	ResponseEntity<String> authenticate(@RequestBody Credentials credentials);
+	ResponseEntity<Token> authenticate(@RequestBody Credentials credentials);
 }
