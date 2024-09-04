@@ -11,6 +11,6 @@ import com.example.usermc.domain.records.Token;
 @RequestMapping("/users")
 public interface UserAPI {
 
-	@PostMapping("/authenticate")
+	@PostMapping("/tokens/generateToken")
 	ResponseEntity<Token> authenticate(@RequestBody Credentials credentials);
 }
