@@ -21,7 +21,7 @@ public class ClientDto {
 		this.id = client.getId();
 		this.name = client.getName();
 		this.cpf = client.getCpf();
-		this.gender = client.getGender();
+		this.gender = client.getGenderType().getGender();
 		this.createdAt = client.getCreatedAt();
 	}
 

@@ -2,6 +2,7 @@ package com.nubank.challenge.web.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.nubank.challenge.domain.dto.ClientDto;
@@ -16,7 +17,7 @@ public class ClientController implements ClientAPI {
 	ClientService clientService;
 
 	@Override
-	public ResponseEntity<ClientDto> save(ClientDto clientDto) {
+	public ResponseEntity<ClientDto> save(@RequestBody ClientDto clientDto) {
 		Client clientSaved = clientService.save(clientDto);
 		return ResponseEntity.status(201).body(new ClientDto(clientSaved));
 	}

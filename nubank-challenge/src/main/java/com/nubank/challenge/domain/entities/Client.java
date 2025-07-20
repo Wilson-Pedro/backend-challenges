@@ -3,8 +3,11 @@ package com.nubank.challenge.domain.entities;
 import org.hibernate.annotations.CreationTimestamp;
 
 import com.nubank.challenge.domain.dto.ClientDto;
+import com.nubank.challenge.domain.enums.GenderType;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -22,7 +25,8 @@ public class Client {
 	
 	private String cpf;
 	
-	private String gender;
+	@Enumerated(EnumType.STRING)
+	private GenderType genderType;
 	
 	@CreationTimestamp
 	private String createdAt;
@@ -30,18 +34,18 @@ public class Client {
 	public Client() {
 	}
 
-	public Client(Long id, String name, String cpf, String gender, String createdAt) {
+	public Client(Long id, String name, String cpf, GenderType genderType, String createdAt) {
 		this.id = id;
 		this.name = name;
 		this.cpf = cpf;
-		this.gender = gender;
+		this.genderType = genderType;
 		this.createdAt = createdAt;
 	}
 	
 	public Client(ClientDto clientDto) {
 		this.name = clientDto.getName();
 		this.cpf = clientDto.getCpf();
-		this.gender = clientDto.getGender();
+		this.genderType = GenderType.toEnum(clientDto.getGender());
 	}
 
 	public Long getId() {
@@ -68,12 +72,12 @@ public class Client {
 		this.cpf = cpf;
 	}
 
-	public String getGender() {
-		return gender;
+	public GenderType getGenderType() {
+		return genderType;
 	}
 
-	public void setGender(String gender) {
-		this.gender = gender;
+	public void setGenderType(GenderType genderType) {
+		this.genderType = genderType;
 	}
 
 	public String getCreatedAt() {
