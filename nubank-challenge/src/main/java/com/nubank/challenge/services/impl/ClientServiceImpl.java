@@ -11,6 +11,7 @@ import com.nubank.challenge.repositories.ClientRepository;
 import com.nubank.challenge.services.ClientService;
 
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 
 @Service
 public class ClientServiceImpl implements ClientService {

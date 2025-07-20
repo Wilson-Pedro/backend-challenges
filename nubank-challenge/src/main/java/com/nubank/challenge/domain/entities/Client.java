@@ -11,6 +11,7 @@ import com.nubank.challenge.domain.enums.GenderType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -33,7 +34,7 @@ public class Client {
 	@Enumerated(EnumType.STRING)
 	private GenderType genderType;
 	
-	@OneToMany
+	@OneToMany(fetch = FetchType.EAGER)
 	@JoinColumn(name= "contact_id")
 	private List<Contact> contacts = new ArrayList<>();
 	
