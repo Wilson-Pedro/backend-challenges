@@ -1,5 +1,6 @@
 package com.nubank.challenge.domain.entities;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.annotations.CreationTimestamp;
@@ -34,7 +35,7 @@ public class Client {
 	
 	@OneToMany
 	@JoinColumn(name= "contact_id")
-	private List<Contact> contacts;
+	private List<Contact> contacts = new ArrayList<>();
 	
 	@CreationTimestamp
 	private String createdAt;

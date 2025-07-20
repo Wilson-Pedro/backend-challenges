@@ -4,10 +4,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.nubank.challenge.domain.dto.ContactDto;
+import com.nubank.challenge.domain.entities.Client;
 import com.nubank.challenge.domain.entities.Contact;
 import com.nubank.challenge.repositories.ContactRepository;
 import com.nubank.challenge.services.ClientService;
 import com.nubank.challenge.services.ContactService;
+
+import jakarta.transaction.Transactional;
 
 @Service
 public class ContactServiceImpl implements ContactService {
@@ -19,10 +22,15 @@ public class ContactServiceImpl implements ContactService {
 	private ClientService clientService;
 
 	@Override
+	@Transactional
 	public Contact save(ContactDto contactDto) {
+		Client client = clientService.findById(contactDto.getClientId());
 		Contact contact = new Contact(contactDto);
-		contact.setClient(clientService.findById(contactDto.getClientId()));
-		return contactRepository.save(contact);
+		contact.setClient(client);
+		contact = contactRepository.save(contact);
+		client.getContacts().add(contact);
+		clientService.save(client);
+		return contact;
 	}
 
 }

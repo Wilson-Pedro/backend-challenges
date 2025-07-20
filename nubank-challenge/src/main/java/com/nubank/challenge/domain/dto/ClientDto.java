@@ -1,6 +1,10 @@
 package com.nubank.challenge.domain.dto;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.nubank.challenge.domain.entities.Client;
+import com.nubank.challenge.domain.entities.Contact;
 
 public class ClientDto {
 
@@ -12,6 +16,8 @@ public class ClientDto {
 	
 	private String gender;
 	
+	private List<ContactMindDto> contacts = new ArrayList<>();
+	
 	private String createdAt;
 	
 	public ClientDto() {
@@ -22,7 +28,15 @@ public class ClientDto {
 		this.name = client.getName();
 		this.cpf = client.getCpf();
 		this.gender = client.getGenderType().getGender();
+		this.contacts = toMinDto(client.getContacts());
 		this.createdAt = client.getCreatedAt();
+	}
+	
+	private static List<ContactMindDto> toMinDto(List<Contact> list) {
+		if(!list.isEmpty()) {
+			return list.stream().map(ContactMindDto::new).toList();
+		}
+		return null;
 	}
 
 	public Long getId() {
@@ -55,6 +69,14 @@ public class ClientDto {
 
 	public void setGender(String gender) {
 		this.gender = gender;
+	}
+
+	public List<ContactMindDto> getContacts() {
+		return contacts;
+	}
+
+	public void setContacts(List<ContactMindDto> contacts) {
+		this.contacts = contacts;
 	}
 
 	public String getCreatedAt() {
