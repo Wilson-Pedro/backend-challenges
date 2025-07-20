@@ -7,4 +7,5 @@ public interface ClientService {
 	
 	Client save(ClientDto clientDto);
 
+	Client findById(Long id);
 }

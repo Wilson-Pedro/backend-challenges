@@ -8,6 +8,8 @@ import com.nubank.challenge.domain.entities.Client;
 import com.nubank.challenge.repositories.ClientRepository;
 import com.nubank.challenge.services.ClientService;
 
+import jakarta.persistence.EntityNotFoundException;
+
 @Service
 public class ClientServiceImpl implements ClientService {
 	
@@ -17,6 +19,11 @@ public class ClientServiceImpl implements ClientService {
 	@Override
 	public Client save(ClientDto clientDto) {
 		return clientRepository.save(new Client(clientDto));
+	}
+
+	@Override
+	public Client findById(Long id) {
+		return clientRepository.findById(id).orElseThrow(EntityNotFoundException::new);
 	}
 
 }

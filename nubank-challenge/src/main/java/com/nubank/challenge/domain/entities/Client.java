@@ -1,5 +1,7 @@
 package com.nubank.challenge.domain.entities;
 
+import java.util.List;
+
 import org.hibernate.annotations.CreationTimestamp;
 
 import com.nubank.challenge.domain.dto.ClientDto;
@@ -11,6 +13,8 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -27,6 +31,10 @@ public class Client {
 	
 	@Enumerated(EnumType.STRING)
 	private GenderType genderType;
+	
+	@OneToMany
+	@JoinColumn(name= "contact_id")
+	private List<Contact> contacts;
 	
 	@CreationTimestamp
 	private String createdAt;
@@ -78,6 +86,14 @@ public class Client {
 
 	public void setGenderType(GenderType genderType) {
 		this.genderType = genderType;
+	}
+
+	public List<Contact> getContacts() {
+		return contacts;
+	}
+
+	public void setContacts(List<Contact> contacts) {
+		this.contacts = contacts;
 	}
 
 	public String getCreatedAt() {
